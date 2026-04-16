@@ -4,12 +4,15 @@ import io
 
 app = FastAPI()
 
-@app.post("/upscale")
-async def upscale_image(file: UploadFile = File(...)):
-    # 先写个空架子，后面我们再把Real-ESRGAN接进来
-    image = Image.open(io.BytesIO(await file.read()))
-    return {"status": "ok", "size": image.size}
+@app.get("/")
+def read_root():
+    return {"status": "API is running"}
 
-@app.post("/inpaint")
-async def inpaint_image(file: UploadFile = File(...), mask: UploadFile = File(...)):
-    return {"status": "ok"}
+@app.post("/test")
+async def test_upload(file: UploadFile = File(...)):
+    try:
+        # 只做个简单的图片读取，不做处理
+        image = Image.open(io.BytesIO(await file.read()))
+        return {"status": "ok", "width": image.width, "height": image.height}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
