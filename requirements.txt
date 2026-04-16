@@ -1,5 +1,3 @@
 fastapi
 uvicorn
 Pillow
-torch
-opencv-python
